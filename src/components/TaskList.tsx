@@ -1,22 +1,59 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import '../styles/tasklist.scss'
 
 import { FiTrash, FiCheckSquare } from 'react-icons/fi'
 
 interface Task {
+  
   id: number;
   title: string;
   isComplete: boolean;
-}
+  }
+
 
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
-  function handleCreateNewTask() {
-    // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+  function Cookies(){
+    const [accepted, setAccepted] = useState(false);
+    useEffect(() => {
+      if (window.sessionStorage.getItem('cookies')) {
+        setAccepted(true);
+      }
+      
+    })
   }
+
+  function acceptValue() {
+        sessionStorage.setItem('cookies', JSON.stringify);
+        setAccepted(true);
+  }
+  function handleCreateNewTask() {
+    if (newTaskTitle.trim() == "") {
+      
+      setNewTaskTitle("");
+       return
+    } else {
+        const newTask = {
+          id:Number((Math.random() * Date.now()).toPrecision(10)),
+          title:newTaskTitle,
+          isComplete: false,  
+          // sessionStorage.setItem('cookies', true),
+          // setAccepted(true);
+                  
+        }
+        
+        setTasks([...tasks, newTask])
+        setNewTaskTitle("")
+        
+      }
+    }
+    
+      
+    // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+  
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
